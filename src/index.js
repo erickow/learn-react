@@ -7,7 +7,7 @@ const App = () => {
   const buttonText = { text: "Click me!" };
   const labelText = "Enter name : ";
   const style = {
-    backgroundColor: "blur",
+    backgroundColor: "blue",
     color: "white"
   };
 
