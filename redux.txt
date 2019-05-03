@@ -1,0 +1,60 @@
+Redux: State management 
+
+Redux cycle:
+  1. Action creator : a function that return a plain js object, create an action
+  2. Action : action when access the redux
+  3. dispatch : make copy of object to pass on reducer
+  4. Reducers : function that responsible an action and by type of action
+  5. State : all information that has been created by reducer
+
+codepen example:
+
+console.clear()
+
+const createPolicy = (name, amount) => {
+  return {
+    type: 'CREATE_POLICY',
+    payload: {
+      name: name,
+      amount: amount
+    }
+  };
+};
+
+const deletePolicy = (name, amount) => {
+  return {
+    type: 'DELETE_POLICY',
+    payload: {
+      name: name,
+      amount: amount
+    }
+  };
+};
+
+const createClaim = (name, amountOfMoneyToCollect) => {
+  return {
+    type: 'CREATE_CLAIM',
+    payload: {
+      name: name,
+      amountOfMoneyToCollect: amountOfMoneyToCollect
+    }
+  };
+};
+
+//Reducers 
+const claimHistory = (oldListOfClaims = [], action) => {
+  if(action.type === 'CREATE_CLAIM'){
+     return [...oldListOfClaims, action.payload]
+  }
+  return oldListOfClaims
+};
+
+const accounting = (bagOfMoney = 100, action) => {
+  if(action.type === 'CREATE_CLAIM'){
+     return bagOfMoney - action.payload.amountOfMoneyToCollect;
+  }
+  else if(action.type === 'CREATE_POLICY') {
+    return bagOfMoney + action.payload.amount;
+  }
+  return bagOfMoney;
+}
