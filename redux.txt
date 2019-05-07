@@ -7,6 +7,8 @@ Redux cycle:
   4. Reducers : function that responsible an action and by type of action
   5. State : all information that has been created by reducer
 
+
+
 codepen example:
 
 console.clear()
@@ -42,7 +44,7 @@ const createClaim = (name, amountOfMoneyToCollect) => {
 };
 
 //Reducers 
-const claimHistory = (oldListOfClaims = [], action) => {
+const claimsHistory = (oldListOfClaims = [], action) => {
   if(action.type === 'CREATE_CLAIM'){
      return [...oldListOfClaims, action.payload]
   }
@@ -57,4 +59,34 @@ const accounting = (bagOfMoney = 100, action) => {
     return bagOfMoney + action.payload.amount;
   }
   return bagOfMoney;
-}
+};
+
+const policies = (listOfPolicies = [], action) => {
+  if(action.type === 'CREATE_POLICY') {
+    return [...listOfPolicies, action.payload.name];
+  }else if (action.type === 'DELETE_POLICY'){
+    return listOfPolicies.filter(name => name != action.payload.name);
+  }
+  return listOfPolicies;
+};
+
+const {createStore, combineReducers} = Redux;
+
+//bind reducer function with combine reducer
+const ourDepartments = combineReducers({
+  accounting: accounting,
+  claimsHistory: claimsHistory,
+  policies: policies
+})
+
+const store = createStore(ourDepartments);
+
+store.dispatch(createPolicy('Alex', 20));
+store.dispatch(createPolicy('Andi', 40));
+store.dispatch(createPolicy('Budi', 20));
+
+store.dispatch(createClaim('Alex', 80));
+
+store.dispatch(deletePolicy('Budi'))
+
+console.log(store.getState());
